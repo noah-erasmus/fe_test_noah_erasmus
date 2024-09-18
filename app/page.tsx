@@ -15,8 +15,10 @@ export default async function Home() {
   const photos: Photo[] = await photosRes.json();
 
   const albumsWithPhotos = albums.map((album) => {
+    // Get photos for the current album
     const albumPhotos = photos.filter((photo) => photo.albumId === album.id);
 
+    // Spread album and add the first photo as a property
     return {
       ...album,
       photo: albumPhotos.length > 0 ? albumPhotos[0] : undefined,

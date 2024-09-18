@@ -12,3 +12,15 @@ export type Album = {
   title: string;
   photo?: Photo;
 };
+
+export type User = {
+  name: string;
+  website: string;
+  email: string;
+  phone: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+};
