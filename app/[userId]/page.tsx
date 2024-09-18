@@ -1,10 +1,8 @@
+import AlbumGallery from "@/components/AlbumGallery";
 import ContentWrap from "@/components/ContentWrap";
-import { User } from "@/types/main";
-import {
-  faArrowLeft,
-  faEnvelope,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons";
+import UserDetails from "@/components/UserDetails";
+import { Album, Photo, User } from "@/types/main";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React from "react";
@@ -18,15 +16,36 @@ const DetailsPage = async ({ params }: DetailsPageProps) => {
   const { userId } = params;
 
   // Fetch user details using the dynamic userId
-  const userRes = await fetch(
-    `https://jsonplaceholder.typicode.com/users/${userId}`
-  );
+  const [userRes, userAlbumsRes, photosRes] = await Promise.all([
+    fetch(`https://jsonplaceholder.typicode.com/users/${userId}`, {
+      cache: "no-store",
+    }),
+    fetch(`https://jsonplaceholder.typicode.com/users/${userId}/albums`, {
+      cache: "no-store",
+    }),
+    fetch(`https://jsonplaceholder.typicode.com/photos`, {
+      cache: "no-store",
+    }),
+  ]);
 
-  if (!userRes.ok) {
-    throw new Error("Failed to fetch user");
+  if (!userRes.ok || !userAlbumsRes.ok || !photosRes.ok) {
+    throw new Error("Failed to fetch info");
   }
 
   const user: User = await userRes.json();
+  const userAlbums: Album[] = await userAlbumsRes.json();
+  const photos: Photo[] = await photosRes.json();
+
+  const albumsWithPhotos = userAlbums.map((album) => {
+    // Get photos for the current album
+    const albumPhotos = photos.filter((photo) => photo.albumId === album.id);
+
+    // Spread album and add the first photo as a property
+    return {
+      ...album,
+      photo: albumPhotos.length > 0 ? albumPhotos[0] : undefined,
+    };
+  });
 
   return (
     <div className="bg-white min-h-screen">
@@ -41,53 +60,13 @@ const DetailsPage = async ({ params }: DetailsPageProps) => {
           </Link>
         </div>
 
-        {/* User Details */}
-        <div className="rounded-md shadow-lg p-6 w-full grid grid-cols-12 divide-y-[1px] divide-black">
-          <div className="col-span-12 flex items-center justify-between mb-4">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-black text-4xl font-bold">{user.name}</h2>
+        <div className="flex flex-col gap-6">
+          <UserDetails {...user} />
 
-              {/* Sensitive Contact Info */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faEnvelope}
-                    className="h-3 text-black"
-                  />
-                  <p className="text-black">{user.email}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FontAwesomeIcon icon={faPhone} className="h-3 text-black" />
-                  <p className="text-black">{user.phone}</p>
-                </div>
-              </div>
-            </div>
-
-            <button className="bg-crayola-blue text-white px-6 py-2 rounded-md shadow-lg hover:scale-[105%] transition-all hover:shadow-xl">
-              Reveal Details
-            </button>
-          </div>
-
-          {/* Non-sensitive Info */}
-          <div className="flex flex-col col-span-2 pt-3">
-            <p className="text-gray-400 text-sm">Website</p>
-            <p className="text-black text-lg">{user.website}</p>
-          </div>
-
-          <div className="flex flex-col pt-3 col-span-2">
-            <p className="text-gray-400 text-sm">Company Name</p>
-            <p className="text-black text-lg">{user.company.name}</p>
-          </div>
-
-          <div className="flex flex-col pt-3 col-span-4">
-            <p className="text-gray-400 text-sm">Company Catchphrase</p>
-            <p className="text-black text-lg">{user.company.catchPhrase}</p>
-          </div>
-
-          <div className="flex flex-col pt-3 col-span-4">
-            <p className="text-gray-400 text-sm">Company BS</p>
-            <p className="text-black text-lg">{user.company.bs}</p>
-          </div>
+          <AlbumGallery
+            albums={albumsWithPhotos}
+            searchPlaceholder={`Search ${user.name}'s albums...`}
+          />
         </div>
       </ContentWrap>
     </div>

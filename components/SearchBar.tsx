@@ -6,17 +6,18 @@ import React from "react";
 
 interface SearchBarProps {
   onChange: (value: string) => void;
+  placeholder?: string;
 }
 
-const SearchBar = ({ onChange }: SearchBarProps) => {
+const SearchBar = ({ onChange, placeholder }: SearchBarProps) => {
   return (
-    <div className="bg-white border-2 border-black w-full rounded-md p-3 flex items-center justify-between">
+    <div className="bg-white w-full rounded-lg shadow-lg p-3 flex items-center justify-between">
       <input
         type={`text`}
         name={`search`}
         id={`search`}
         className="w-full outline-none text-black"
-        placeholder={`Search albums...`}
+        placeholder={placeholder ? placeholder : `Search albums...`}
         onChange={(event) => {
           onChange(event.target.value);
         }}

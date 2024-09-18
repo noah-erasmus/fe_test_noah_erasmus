@@ -1,4 +1,5 @@
 import AlbumGallery from "@/components/AlbumGallery";
+import ContentWrap from "@/components/ContentWrap";
 import { Album, Photo } from "@/types/main";
 
 export default async function Home() {
@@ -27,7 +28,10 @@ export default async function Home() {
 
   return (
     <div className="bg-white min-h-screen">
-      <AlbumGallery albums={albumsWithPhotos} />
+      <ContentWrap className="py-12">
+        <h2 className="text-black text-4xl font-bold mb-4">Album Gallery</h2>
+        <AlbumGallery albums={albumsWithPhotos} />
+      </ContentWrap>
     </div>
   );
 }

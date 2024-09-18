@@ -1,34 +1,48 @@
 "use client";
 
 import React, { useState } from "react";
-import ContentWrap from "./ContentWrap";
 import Image from "next/image";
 import { Album } from "@/types/main";
 import SearchBar from "./SearchBar";
 import Link from "next/link";
+import Fuse from "fuse.js";
 
 interface AlbumGalleryProps {
   albums: Album[];
+  searchPlaceholder?: string;
 }
 
-const AlbumGallery = ({ albums }: AlbumGalleryProps) => {
+const fuseOptions = {
+  keys: ["title"],
+  // Lower threshold means more accurate matching
+  threshold: 0.3,
+};
+
+const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
   const [searchString, setSearchString] = useState("");
-  // Filter albums based on search string
-  const filteredAlbums = albums.filter((album) =>
-    album.title.toLowerCase().includes(searchString.toLowerCase())
-  );
+
+  // Initialize Fuse.js
+  const fuse = new Fuse(albums, fuseOptions);
+
+  // Perform fuzzy search if searchString exists, otherwise show all albums
+  const filteredAlbums = searchString
+    ? fuse.search(searchString).map((result) => result.item) // Get the items from Fuse.js results
+    : albums;
 
   return (
-    <ContentWrap>
+    <div className="flex flex-col gap-6">
       {/* Pass function to update search string to the search component */}
-      <SearchBar onChange={(value) => setSearchString(value)} />
+      <SearchBar
+        onChange={(value) => setSearchString(value)}
+        placeholder={searchPlaceholder}
+      />
 
-      <div className="grid grid-cols-6 gap-6">
+      <div className="grid grid-cols-7 gap-4">
         {filteredAlbums.map((album) => (
           <Link
-            href={`/${album.userId}/${album.id}`}
+            href={`/${album.userId}`}
             key={album.id}
-            className=""
+            className="flex flex-col items-center rounded-md p-4 hover:shadow-lg hover:scale-[105%] transition-all"
           >
             <Image
               src={
@@ -40,11 +54,11 @@ const AlbumGallery = ({ albums }: AlbumGalleryProps) => {
               width={150}
               height={150}
             />
-            <h2 className="text-lg font-semibold text-black">{album.title}</h2>
+            <h2 className="text-sm font-semibold text-black">{album.title}</h2>
           </Link>
         ))}
       </div>
-    </ContentWrap>
+    </div>
   );
 };
 
