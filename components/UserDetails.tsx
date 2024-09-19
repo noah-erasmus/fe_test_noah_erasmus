@@ -91,7 +91,7 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
   };
 
   return (
-    <div className="rounded-md shadow-lg p-6 w-full grid grid-cols-1 md:grid-cols-12 divide-y-[1px] divide-black">
+    <div className="rounded-md bg-white shadow-lg p-6 w-full grid grid-cols-1 md:grid-cols-12 divide-y-[1px] divide-black">
       <div className="md:col-span-12 flex flex-col md:flex-row items-center justify-between mb-4">
         <div className="flex flex-col gap-2">
           <h2 className="text-black text-4xl font-bold">{name}</h2>

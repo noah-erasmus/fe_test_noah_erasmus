@@ -44,11 +44,11 @@ const DetailsPage = async ({ params }: DetailsPageProps) => {
   return (
     <div className="bg-off-white min-h-screen">
       <ContentWrap className="py-12">
-        <div className="flex items-center gap-">
+        <div className="flex items-center mb-4">
           {/* Back button */}
           <Link
             href={"/"}
-            className="w-14 h-14 p-3 flex items-center justify-center rounded-full hover:shadow-lg transition-all cursor-pointer"
+            className="w-14 h-14 p-3 flex items-center justify-center rounded-full hover:shadow-lg transition-all cursor-pointer bg-white"
           >
             <FontAwesomeIcon icon={faArrowLeft} className=" text-black" />
           </Link>

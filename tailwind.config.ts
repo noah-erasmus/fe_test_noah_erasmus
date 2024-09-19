@@ -12,7 +12,7 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         "crayola-blue": "#0075F2",
-        "off-white": "#f9f9f9",
+        "off-white": "#fbf7f5",
       },
     },
   },

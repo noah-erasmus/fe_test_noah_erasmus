@@ -61,7 +61,7 @@ const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
           <Link
             href={`/${album.userId}`}
             key={album.id}
-            className="flex flex-col items-center rounded-md p-4 hover:shadow-lg hover:scale-[105%] transition-all"
+            className="flex flex-col items-center rounded-md p-4 bg-white hover:shadow-lg hover:scale-[105%] transition-all"
           >
             <Image
               src={
