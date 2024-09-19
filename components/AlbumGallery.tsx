@@ -34,10 +34,14 @@ const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-black text-4xl font-bold">Album Gallery</h2>
+        <h2 className="text-black text-2xl lg:text-4xl font-bold">
+          Album Gallery
+        </h2>
 
         <div className="flex items-center gap-2">
-          <p className="text-black font-light text-sm">Lorem Picsum</p>
+          <p className="text-black font-light text-xs lg:text-sm">
+            Lorem Picsum
+          </p>
           {/* Toggle Lorem Picsum Images */}
           <Toggle
             defaultChecked={showLoremPicsum}
@@ -52,7 +56,7 @@ const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
         placeholder={searchPlaceholder}
       />
 
-      <div className="grid grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 lg:gap-4">
         {filteredAlbums.map((album) => (
           <Link
             href={`/${album.userId}`}

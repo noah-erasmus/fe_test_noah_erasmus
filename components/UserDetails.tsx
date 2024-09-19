@@ -47,6 +47,8 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
   };
 
   const handleSubmit = () => {
+    console.log(userInput);
+    console.log(correctAnswer);
     if (userInput === correctAnswer) {
       // Reveal details if the answer is correct
       setDetailsRevealed(true);
@@ -75,8 +77,11 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
       if (failedAttempts[relevantUser]?.attempts >= 2) {
         setDetailsLocked(true);
       } else {
-        setNum1(Math.floor(Math.random() * 90 + 10));
-        setNum2(Math.floor(Math.random() * 90 + 10));
+        const newNum1 = Math.floor(Math.random() * 90 + 10);
+        const newNum2 = Math.floor(Math.random() * 90 + 10);
+        setNum1(newNum1);
+        setNum2(newNum2);
+        setCorrectAnswer(newNum1 + newNum2);
       }
     }
   };
@@ -86,13 +91,13 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
   };
 
   return (
-    <div className="rounded-md shadow-lg p-6 w-full grid grid-cols-12 divide-y-[1px] divide-black">
-      <div className="col-span-12 flex items-center justify-between mb-4">
+    <div className="rounded-md shadow-lg p-6 w-full grid grid-cols-1 md:grid-cols-12 divide-y-[1px] divide-black">
+      <div className="md:col-span-12 flex flex-col md:flex-row items-center justify-between mb-4">
         <div className="flex flex-col gap-2">
           <h2 className="text-black text-4xl font-bold">{name}</h2>
 
           {/* Sensitive Contact Info */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faEnvelope} className="h-3 text-black" />
               <a
@@ -106,6 +111,7 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
                 {email}
               </a>
             </div>
+
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faPhone} className="h-3 text-black" />
               <a
@@ -122,7 +128,7 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col-reverse md:flex-row items-center md:gap-8 mt-2 md:mt-0">
           {detailsLocked && (
             <p className="text-red-400">
               Too many attempts!
@@ -132,7 +138,7 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
           )}
 
           {!detailsRevealed && showInput && (
-            <div className="flex items-center gap-2 relative">
+            <div className="flex items-center gap-2 relative mb-2 md:mb-0 mt-8 md:mt-0">
               {!detailsLocked && (
                 <p className="text-xs text-gray-400 absolute -top-4">
                   Solve to reveal
@@ -166,7 +172,7 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
               onClick={
                 !detailsRevealed && showInput ? handleSubmit : handleReveal
               }
-              className="bg-crayola-blue text-white px-6 py-2 rounded-md shadow-lg hover:scale-[105%] transition-all hover:shadow-xl"
+              className="bg-crayola-blue text-white px-6 py-2 w-full rounded-md shadow-lg hover:scale-[105%] transition-all hover:shadow-xl mt-4 md:mt-0"
             >
               {!detailsRevealed && showInput
                 ? "Submit Answer"
@@ -177,24 +183,24 @@ const UserDetails = ({ name, email, phone, website, company, id }: User) => {
       </div>
 
       {/* Non-sensitive Info */}
-      <div className="flex flex-col col-span-2 pt-3">
+      <div className="flex flex-col md:col-span-2 pt-3">
         <p className="text-gray-400 text-sm">Website</p>
-        <p className="text-black text-lg">{website}</p>
+        <p className="text-black lg:text-lg">{website}</p>
       </div>
 
-      <div className="flex flex-col pt-3 col-span-2">
+      <div className="flex flex-col pt-3 md:col-span-2">
         <p className="text-gray-400 text-sm">Company Name</p>
-        <p className="text-black text-lg">{company.name}</p>
+        <p className="text-black lg:text-lg">{company.name}</p>
       </div>
 
-      <div className="flex flex-col pt-3 col-span-4">
+      <div className="flex flex-col pt-3 md:col-span-4">
         <p className="text-gray-400 text-sm">Company Catchphrase</p>
-        <p className="text-black text-lg">{company.catchPhrase}</p>
+        <p className="text-black lg:text-lg">{company.catchPhrase}</p>
       </div>
 
-      <div className="flex flex-col pt-3 col-span-4">
+      <div className="flex flex-col pt-3 md:col-span-4">
         <p className="text-gray-400 text-sm">Company BS</p>
-        <p className="text-black text-lg">{company.bs}</p>
+        <p className="text-black lg:text-lg">{company.bs}</p>
       </div>
     </div>
   );
