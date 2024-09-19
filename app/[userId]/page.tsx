@@ -48,7 +48,7 @@ const DetailsPage = async ({ params }: DetailsPageProps) => {
   });
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-off-white min-h-screen">
       <ContentWrap className="py-12">
         <div className="flex items-center gap-8">
           {/* Back button */}
