@@ -2,7 +2,7 @@ import AlbumGallery from "@/components/AlbumGallery";
 import ContentWrap from "@/components/ContentWrap";
 import UserDetails from "@/components/UserDetails";
 import { Album, Photo, User } from "@/types/main";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faHouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React from "react";
@@ -15,17 +15,11 @@ const DetailsPage = async ({ params }: DetailsPageProps) => {
   // Extract the userId from the dynamic route
   const { userId } = params;
 
-  // Fetch user details using the dynamic userId
+  // Statically fetch user details using the dynamic userId
   const [userRes, userAlbumsRes, photosRes] = await Promise.all([
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}`, {
-      cache: "no-store",
-    }),
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}/albums`, {
-      cache: "no-store",
-    }),
-    fetch(`https://jsonplaceholder.typicode.com/photos`, {
-      cache: "no-store",
-    }),
+    fetch(`https://jsonplaceholder.typicode.com/users/${userId}`),
+    fetch(`https://jsonplaceholder.typicode.com/users/${userId}/albums`),
+    fetch(`https://jsonplaceholder.typicode.com/photos`),
   ]);
 
   if (!userRes.ok || !userAlbumsRes.ok || !photosRes.ok) {
@@ -50,7 +44,7 @@ const DetailsPage = async ({ params }: DetailsPageProps) => {
   return (
     <div className="bg-off-white min-h-screen">
       <ContentWrap className="py-12">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-">
           {/* Back button */}
           <Link
             href={"/"}

@@ -3,9 +3,10 @@ import ContentWrap from "@/components/ContentWrap";
 import { Album, Photo } from "@/types/main";
 
 export default async function Home() {
+  // Statically fetch albums and photos
   const [albumsRes, photosRes] = await Promise.all([
-    fetch("https://jsonplaceholder.typicode.com/albums", { cache: "no-store" }),
-    fetch("https://jsonplaceholder.typicode.com/photos", { cache: "no-store" }),
+    fetch("https://jsonplaceholder.typicode.com/albums"),
+    fetch("https://jsonplaceholder.typicode.com/photos"),
   ]);
 
   if (!albumsRes.ok || !photosRes.ok) {
@@ -29,7 +30,6 @@ export default async function Home() {
   return (
     <div className="bg-off-white min-h-screen">
       <ContentWrap className="py-12">
-        <h2 className="text-black text-4xl font-bold mb-4">Album Gallery</h2>
         <AlbumGallery albums={albumsWithPhotos} />
       </ContentWrap>
     </div>

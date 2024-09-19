@@ -6,6 +6,7 @@ import { Album } from "@/types/main";
 import SearchBar from "./SearchBar";
 import Link from "next/link";
 import Fuse from "fuse.js";
+import Toggle from "react-toggle";
 
 interface AlbumGalleryProps {
   albums: Album[];
@@ -19,6 +20,7 @@ const fuseOptions = {
 };
 
 const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
+  const [showLoremPicsum, setShowLoremPicsum] = useState(false);
   const [searchString, setSearchString] = useState("");
 
   // Initialize Fuse.js
@@ -31,6 +33,19 @@ const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-black text-4xl font-bold">Album Gallery</h2>
+
+        <div className="flex items-center gap-2">
+          <p className="text-black font-light text-sm">Lorem Picsum</p>
+          {/* Toggle Lorem Picsum Images */}
+          <Toggle
+            defaultChecked={showLoremPicsum}
+            onChange={(e) => setShowLoremPicsum(e.target.checked)}
+          />
+        </div>
+      </div>
+
       {/* Pass function to update search string to the search component */}
       <SearchBar
         onChange={(value) => setSearchString(value)}
@@ -46,9 +61,9 @@ const AlbumGallery = ({ albums, searchPlaceholder }: AlbumGalleryProps) => {
           >
             <Image
               src={
-                album.photo?.thumbnailUrl
-                  ? album.photo.thumbnailUrl
-                  : `https://picsum.photos/150/150?random=${album.id}`
+                showLoremPicsum || !album.photo?.thumbnailUrl
+                  ? `https://picsum.photos/150/150?random=${album.id}`
+                  : album.photo?.thumbnailUrl
               }
               alt="Album cover"
               width={150}
